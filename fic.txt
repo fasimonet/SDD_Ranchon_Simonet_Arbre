@@ -1,0 +1,10 @@
+arbre
+feuille
+sport
+football
+ban
+fournir
+bannir
+manger
+
+

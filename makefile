@@ -1,15 +1,15 @@
 CC=gcc
 FLAGS=-g -W -Wall -ansi -pedantic
-EXEC=prog
+EXEC=main
 
 all: $(EXEC)
 
-prog: prog.o file.o pile.o test.o truc.o
+main	: main.o arbre.o pile.o
 	$(CC) -o $@ $^
 	@echo "--------------------------------"
 	@echo "------Compilation réussie-------"
 	@echo "--------------------------------"
-	@echo "Lancer le programme avec  ./prog"
+	@echo "Lancer le programme avec  ./main"
 
 %.o: %.c
 	$(CC) -o $@ -c $< $(FLAGS)

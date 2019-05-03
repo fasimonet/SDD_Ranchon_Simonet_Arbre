@@ -46,7 +46,7 @@ pile_t* initialiser_pile(int n)
     }
     else 
     {
-        p->contenu = (element_pile_t*) malloc(sizeof(element_pile_t)*n);
+        p->contenu = (element_pile_t **) malloc(sizeof(element_pile_t*) * n);
         if(p->contenu == NULL)
         {
             printf("Pb allocation contenu de la pile\n");
@@ -94,7 +94,7 @@ void afficher_pile(pile_t p)
 
         while (cpt <= p.rang_sommet)
         {
-            printf(""FORMAT"\n", p.contenu[cpt]);
+            printf("%c\n", p.contenu[cpt]->val);
             cpt++;
         }
     }
@@ -153,7 +153,7 @@ int est_pile_pleine(pile_t p)
 /* Lexique:                                                                                             */
 /*          ok booleen indique si l'element a pu etre empile correctement ou non                        */
 /* ---------------------------------------------------------------------------------------------------- */
-void empiler(pile_t* p, int *ok, element_pile_t val)
+void empiler(pile_t* p, int *ok, element_pile_t * val)
 {
     *ok = !est_pile_pleine(*p);
     if (*ok)
@@ -183,7 +183,7 @@ void empiler(pile_t* p, int *ok, element_pile_t val)
 /* Lexique:                                                                                             */
 /*          ok adresse du booleen qui indique si l'element a pu etre defile correctement ou non         */
 /* ---------------------------------------------------------------------------------------------------- */
-void depiler(pile_t* p, int* ok, element_pile_t* res)
+void depiler(pile_t* p, int* ok, element_pile_t ** res)
 {
     *ok = !est_pile_vide(*p);
     if (*ok)
@@ -212,7 +212,7 @@ void depiler(pile_t* p, int* ok, element_pile_t* res)
 /* Lexique:                                                                                             */
 /*          ok adresse du booleen qui indique si le sommet a pu etre recupere ou non                    */
 /* ---------------------------------------------------------------------------------------------------- */
-void sommet(pile_t p, int* ok, element_pile_t* res)
+void sommet(pile_t p, int* ok, element_pile_t ** res)
 {
     *ok = !est_pile_vide(p);
     if (*ok)

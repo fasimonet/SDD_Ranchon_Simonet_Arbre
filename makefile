@@ -4,7 +4,7 @@ EXEC=main
 
 all: $(EXEC)
 
-main	: main.o arbre.o pile.o
+main	: main.o arbre.o pile.o fichier.o
 	$(CC) -o $@ $^
 	@echo "--------------------------------"
 	@echo "------Compilation réussie-------"

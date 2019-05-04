@@ -1,5 +1,13 @@
 #include "arbre.h"
 
+char lower(char val)
+{
+	if ( val > 64 && val < 91  )
+		val += 32;
+
+	return val;
+}
+
 noeud_t* init_arbre()
 {
 	return NULL;
@@ -26,27 +34,24 @@ noeud_t* creer_noeud(char val)
 noeud_t** recherche_prec_horizontal(noeud_t ** prec, char val, int * existe)
 {
 	noeud_t * fils = *prec;
-	char last_val = 0;
 
-	*existe = 0;
-
-	while (fils && fils->val < val)
+	while (fils && lower(fils->val) < val)
 	{
 		prec = &(fils->lh);
 		fils = fils->lh;
-		if (fils)
-			last_val = fils->val;
 	}
 
-	if ( last_val == val )
-		*existe = 1;
+	*existe = (fils && lower(fils->val) == val) ? 1 : 0;
 
 	return prec;
 }
 
 void inserer_noeud(noeud_t ** arbre, char mot[5])
 {
-	int existe, i = 0, taille = strlen(mot);
+	int existe, 
+		i = 0, 
+		taille = strlen(mot);
+
 	noeud_t ** cour = arbre,
 			** prec,
 			*  nv;
@@ -62,18 +67,16 @@ void inserer_noeud(noeud_t ** arbre, char mot[5])
 		}
 	} while ( existe );
 
-	while ( i < taille -1 )
+	while ( i < taille )
 	{
+		if ( i == taille - 1 )
+			mot[i] -= 32;
+
 		nv = creer_noeud(mot[i++]);
 		nv->lh = *prec;
 		*prec = nv;
 		prec = &(nv->lv);
 	}
-
-	printf("%c\n", 'e' - 32);
-	nv = creer_noeud(mot[i] - 32);
-	nv->lh = *prec;
-	*prec = nv;
 }
 
 noeud_t* liberer_arbre(noeud_t* arbre)
@@ -92,11 +95,14 @@ void afficher_prefixe(noeud_t * noeud)
 
 	while ( cour )
 	{
-		if ( cour->val > 64 && cour->val < 91 )
-			printf("mot : %s\n", mot);
-
 		empiler(p, &ok, cour);
 		mot[strlen(mot)] = cour->val;
+
+		if ( cour->val > 64 && cour->val < 91 )
+		{
+			mot[strlen(mot)-1] = mot[strlen(mot)-1] + 32;
+			printf("%s\n", mot);
+		}
 
 		cour = cour->lv;
 

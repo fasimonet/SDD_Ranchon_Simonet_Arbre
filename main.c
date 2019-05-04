@@ -1,16 +1,19 @@
 #include "arbre.h"
+#include "fichier.h"
 #include <stdio.h>
 
-int main(/*int argc, char ** argv*/)
+int main()
 {
 	noeud_t * arbre = init_arbre();
-	char mot[5] = "azer";
-	char mot2[5] = "qsdf";
-	char mot3[5] = "arbre";
+	char ** dico;
+	int taille, i;
 
-	inserer_noeud(&arbre, mot);
-	inserer_noeud(&arbre, mot2);
-	inserer_noeud(&arbre, mot3);
+	taille = charger_fichier("fic.txt", &dico);
+
+	for (i = 0; i < taille; ++i)
+	{
+		inserer_noeud(&arbre, dico[i]);
+	}
 
 	afficher_prefixe(arbre);
 

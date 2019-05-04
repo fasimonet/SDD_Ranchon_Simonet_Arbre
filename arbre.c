@@ -1,18 +1,20 @@
 #include "arbre.h"
 
-char lower(char val)
+int is_uppercase(char c)
 {
-	if ( val > 64 && val < 91  )
-		val += 32;
+	return (c > 64 && c < 91) ? 1 : 0;
+}
 
-	return val;
+char lower(char c)
+{
+	return is_uppercase(c) ? c + 32 : c;
 }
 
 int start_with(char * mot, char * motif)
 {
-	int i, 
-	    taille_mot = strlen(mot), 
+	int i,
 	    taille_motif = strlen(motif),
+	    taille_mot = strlen(mot),
 	    code_retour = 0;
 
 	if ( taille_motif <= taille_mot )
@@ -20,7 +22,9 @@ int start_with(char * mot, char * motif)
 		for (i = 0; i < taille_motif && !code_retour; ++i )
 		{
 			if ( lower(mot[i]) != motif[i] )
+			{
 				code_retour = 1;
+			}
 		}
 	}
 	else
@@ -39,65 +43,67 @@ void afficher_mot(char * mot)
 
 	for (i = 0; i < taille; ++i, inc = 0)
 	{
-		if ( mot[i] > 64 && mot[i] < 91 )
+		if ( is_uppercase(mot[i]) )
 		{
 			inc = 32;
 		}
 
 		printf("%c", mot[i] + inc);
 	}
+
 	printf("\n");
 }
 
-noeud_t* init_arbre()
+/**************************************************************************/
+
+noeud_t * init_arbre()
 {
 	return NULL;
 }
 
-noeud_t* creer_noeud(char val)
+noeud_t * creer_noeud(char c)
 {
-	noeud_t * nv;
-	nv = (noeud_t*) malloc(sizeof(noeud_t));
-	if ( nv == NULL )
+	noeud_t * nv = (noeud_t*) malloc(sizeof(noeud_t));
+
+	if ( nv )
 	{
-		fprintf(stderr, "Erreur d'allocation mémoire.\n");
+		nv->val = c;
+		nv->lv = NULL;
+		nv->lh = NULL;
 	}
 	else
 	{
-		nv->val = val;
-		nv->lv = NULL;
-		nv->lh = NULL;
+		fprintf(stderr, "Erreur d'allocation mémoire.\n");
 	}
 	
 	return nv;
 }
 
-noeud_t** recherche_prec_horizontal(noeud_t ** prec, char val, int * existe)
+noeud_t ** recherche_prec_horizontal(noeud_t ** prec, char c, int * existe)
 {
 	noeud_t * fils = *prec;
 
-	while (fils && lower(fils->val) < val)
+	while (fils && lower(fils->val) < c)
 	{
 		prec = &(fils->lh);
 		fils = fils->lh;
 	}
 
-	*existe = (fils && lower(fils->val) == val) ? 1 : 0;
+	*existe = (fils && lower(fils->val) == c) ? 1 : 0;
 
 	return prec;
 }
 
-void inserer_noeud(noeud_t ** arbre, char mot[5])
+void inserer_noeud(noeud_t ** arbre, char * mot)
 {
-	int existe, 
-		i = 0, 
-		taille = strlen(mot);
-
 	noeud_t ** cour = arbre,
 			** prec,
 			*  nv;
+	int        existe = 1,
+		       i = 0,
+		       taille = strlen(mot);
 
-	do
+	while ( existe )
 	{
 		prec = recherche_prec_horizontal(cour, mot[i], &existe);
 
@@ -106,41 +112,75 @@ void inserer_noeud(noeud_t ** arbre, char mot[5])
 			cour = &((*prec)->lv);
 			++i;
 		}
-	} while ( existe );
+	}
 
 	while ( i < taille )
 	{
 		if ( i == taille - 1 )
+		{
 			mot[i] -= 32;
+		}
 
-		nv = creer_noeud(mot[i++]);
+		nv = creer_noeud(mot[i]);
+
 		nv->lh = *prec;
 		*prec = nv;
+
 		prec = &(nv->lv);
+		++i;
 	}
 }
 
-noeud_t* liberer_arbre(noeud_t* arbre)
+void liberer_arbre(noeud_t * arbre)
 {
-	printf("%c\n", arbre->val);
-	return NULL;
+	noeud_t * cour = arbre,
+	        * tmp;
+	pile_t  * p = initialiser_pile(10);
+	int       ok;
+
+	while ( cour )
+	{
+		empiler(p, &ok, cour);
+
+		cour = cour->lv;
+		while ( !cour && !est_pile_vide(*p) )
+		{
+			depiler(p, &ok, &tmp);
+			cour = tmp->lh;
+			free(tmp);
+		}
+	}
+
+	liberer_pile(p);
 }
 
-void afficher_prefixe(noeud_t * noeud)
+void liberer_dico(char ** dico, int taille)
+{
+	int i;
+
+	for (i = 0; i < taille; ++i)
+	{
+		free(dico[i]);
+	}
+
+	free(dico);
+}
+
+void afficher_prefixe(noeud_t * noeud, char * motif)
 {
 	noeud_t * cour = noeud;
-
-	pile_t * p = initialiser_pile(10);
-	int ok;
-	char mot[10] = "";
+	pile_t  * p = initialiser_pile(10);
+	int       ok;
+	char      mot[30] = "";
 
 	while ( cour )
 	{
 		empiler(p, &ok, cour);
 		mot[strlen(mot)] = cour->val;
 
-		if ( cour->val > 64 && cour->val < 91 )
+		if ( is_uppercase(cour->val) )
 		{
+			printf("%s", motif);
 			afficher_mot(mot);
 		}
 
@@ -154,34 +194,36 @@ void afficher_prefixe(noeud_t * noeud)
 			cour = cour->lh;
 		}
 	}
+
+	liberer_pile(p);
 }
 
-void afficher_motif(noeud_t *noeud, char motif[5])
+void afficher_motif(noeud_t ** arbre, char * motif)
 {
-	noeud_t * cour = noeud;
+	noeud_t ** cour = arbre,
+			** prec;
+	int        existe = 1,
+		       i = 0,
+		       taille = strlen(motif);
 
-	pile_t * p = initialiser_pile(10);
-	int ok;
-	char mot[10] = "";
-
-	while ( cour )
+	while ( existe && i < taille )
 	{
-		empiler(p, &ok, cour);
-		mot[strlen(mot)] = cour->val;
+		prec = recherche_prec_horizontal(cour, motif[i], &existe);
 
-		if ( cour->val > 64 && cour->val < 91 && start_with(mot, motif) == 0 )
+		if ( existe )
 		{
-			afficher_mot(mot);
+			cour = &((*prec)->lv);
+			++i;
+		}
+	}
+
+	if ( existe )
+	{
+		if ( is_uppercase((*prec)->val) )
+		{
+			printf("%s\n", motif);
 		}
 
-		cour = cour->lv;
-
-		while ( !cour && !est_pile_vide(*p) )
-		{
-			depiler(p, &ok, &cour);
-			mot[strlen(mot)-1] = 0;
-
-			cour = cour->lh;
-		}
-	}	
+		afficher_prefixe((*prec)->lv, motif);
+	}
 }

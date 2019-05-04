@@ -4,9 +4,10 @@
 
 int main()
 {
-	noeud_t * arbre = init_arbre();
-	char ** dico;
-	int taille, i;
+	noeud_t  * arbre = init_arbre();
+	char    ** dico;
+	int        taille,
+	           i;
 
 	taille = charger_fichier("fic.txt", &dico);
 
@@ -15,9 +16,16 @@ int main()
 		inserer_noeud(&arbre, dico[i]);
 	}
 
-	afficher_prefixe(arbre);
+	afficher_prefixe(arbre, "");
+
 	printf("-----------\n");
-	afficher_motif(arbre, "ban");
+
+	afficher_motif(&arbre, "fo");
+
+	liberer_arbre(arbre);
+	liberer_dico(dico, taille);
+
+	arbre = init_arbre();
 
 	return 0;
 }

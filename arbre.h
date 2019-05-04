@@ -18,6 +18,7 @@ noeud_t** recherche_prec_horizontal(noeud_t ** prec, char val, int * existe);
 void inserer_noeud(noeud_t ** arbre, char mot[5]);
 noeud_t* liberer_arbre(noeud_t* arbre);
 void afficher_prefixe(noeud_t *noeud);
+void afficher_motif(noeud_t *noeud, char motif[5]);
 
 
 #endif 

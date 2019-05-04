@@ -16,6 +16,8 @@ int main()
 	}
 
 	afficher_prefixe(arbre);
+	printf("-----------\n");
+	afficher_motif(arbre, "ban");
 
 	return 0;
 }

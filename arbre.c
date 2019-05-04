@@ -8,6 +8,47 @@ char lower(char val)
 	return val;
 }
 
+int start_with(char * mot, char * motif)
+{
+	int i, 
+	    taille_mot = strlen(mot), 
+	    taille_motif = strlen(motif),
+	    code_retour = 0;
+
+	if ( taille_motif <= taille_mot )
+	{
+		for (i = 0; i < taille_motif && !code_retour; ++i )
+		{
+			if ( lower(mot[i]) != motif[i] )
+				code_retour = 1;
+		}
+	}
+	else
+	{
+		code_retour = 1;
+	}
+
+	return code_retour;
+}
+
+void afficher_mot(char * mot)
+{
+	int i,
+	    taille = strlen(mot),
+	    inc = 0;
+
+	for (i = 0; i < taille; ++i, inc = 0)
+	{
+		if ( mot[i] > 64 && mot[i] < 91 )
+		{
+			inc = 32;
+		}
+
+		printf("%c", mot[i] + inc);
+	}
+	printf("\n");
+}
+
 noeud_t* init_arbre()
 {
 	return NULL;
@@ -100,8 +141,7 @@ void afficher_prefixe(noeud_t * noeud)
 
 		if ( cour->val > 64 && cour->val < 91 )
 		{
-			mot[strlen(mot)-1] = mot[strlen(mot)-1] + 32;
-			printf("%s\n", mot);
+			afficher_mot(mot);
 		}
 
 		cour = cour->lv;
@@ -114,4 +154,34 @@ void afficher_prefixe(noeud_t * noeud)
 			cour = cour->lh;
 		}
 	}
+}
+
+void afficher_motif(noeud_t *noeud, char motif[5])
+{
+	noeud_t * cour = noeud;
+
+	pile_t * p = initialiser_pile(10);
+	int ok;
+	char mot[10] = "";
+
+	while ( cour )
+	{
+		empiler(p, &ok, cour);
+		mot[strlen(mot)] = cour->val;
+
+		if ( cour->val > 64 && cour->val < 91 && start_with(mot, motif) == 0 )
+		{
+			afficher_mot(mot);
+		}
+
+		cour = cour->lv;
+
+		while ( !cour && !est_pile_vide(*p) )
+		{
+			depiler(p, &ok, &cour);
+			mot[strlen(mot)-1] = 0;
+
+			cour = cour->lh;
+		}
+	}	
 }

@@ -1,10 +1,23 @@
+/* ---------------------------------------------------------------------------------------------------- */
+/* Nom du fichier : arbre.h                                                                            	*/
+/* Date de creation : 05/05/2019                                                                     	*/
+/* Auteurs : Flavio RANCHON et Fabien SIMONET (G21)                                                 	*/
+/* Objectif : repertorier les prototypes des fonctions de manipulation d'arbre                          */
+/* ---------------------------------------------------------------------------------------------------- */
+
 #ifndef ARBRE_H
 #define ARBRE_H
 
+/* ------------------------------ */
+/*     Inclusion des fichiers     */
+/* ------------------------------ */
 #include "pile.h"
 #include <stdio.h>
 #include <string.h>
 
+/* ------------------------------ */
+/*   Déclaration des structures   */
+/* ------------------------------ */
 typedef struct maillon
 {
 	char val;
@@ -12,6 +25,9 @@ typedef struct maillon
 	struct maillon * lh;
 } noeud_t;
 
+/* ------------------------------ */
+/*   Déclaration des prototypes   */
+/* ------------------------------ */
 noeud_t* init_arbre();
 
 noeud_t* creer_noeud(char val);

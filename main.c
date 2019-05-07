@@ -20,7 +20,7 @@ int main()
 
 	printf("-----------\n");
 
-	afficher_motif(&arbre, "fo");
+	afficher_motif(&arbre, "banni");
 
 	liberer_arbre(arbre);
 	liberer_dico(dico, taille);

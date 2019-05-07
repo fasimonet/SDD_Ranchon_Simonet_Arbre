@@ -14,6 +14,7 @@
 #include "pile.h"
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 /* ------------------------------ */
 /*   Déclaration des structures   */

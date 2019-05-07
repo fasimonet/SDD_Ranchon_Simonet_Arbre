@@ -3,7 +3,7 @@ arbre
 feuille
 sport
 football
-ban
 fournir
+ban
 bannir
 manger

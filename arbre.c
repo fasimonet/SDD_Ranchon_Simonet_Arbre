@@ -6,9 +6,6 @@
 /* Auteurs : Flavio RANCHON et Fabien SIMONET (G21)                                                     */
 /* Objectif : manipuler les arbres                                                                      */
 /* Fonctions :                                                                                          */
-/*  - is_uppercase	                                                                                */
-/*  - lower                                                                                     	*/
-/*  - start_with                                                                                     	*/
 /*  - afficher_mot                                                                                   	*/
 /*  - init_arbre                                                                                      	*/
 /*  - creer_noeud                                                                                     	*/
@@ -19,79 +16,6 @@
 /*  - afficher_prefixe											*/
 /*  - afficher_motif											*/
 /* ---------------------------------------------------------------------------------------------------- */
-
-/* ---------------------------------------------------------------------------------------------------- */
-/* is_uppercase         	Verifie si un caractere est en majuscule           			*/
-/*                                                                                                      */
-/* En entree:                                                                                           */
-/*      c 	un caractere à verifier									*/
-/*                                                                                                      */
-/* En sortie:                                                 						*/
-/*	0 si faux, 1 si vrai                                                              		*/
-/*													*/
-/* Principe:                                                                                           	*/
-/*      Si le caractere est en majuscule                                                               	*/
-/*      	Retourner vrai (1)                                                              	*/
-/*      Sinon                                                                                           */
-/*      	Retourner faux (0)                     							*/
-/*	Fsi												*/
-/*                                                                                                      */
-/* Lexique:                                                                                            	*/
-/*      Aucune variable                                                     				*/
-/* ---------------------------------------------------------------------------------------------------- */
-int is_uppercase(char c)
-{
-	return (c > 64 && c < 91) ? 1 : 0;
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
-/* lower         			Met un caractere en minuscule           			*/
-/*                                                                                                      */
-/* En entree:                                                                                           */
-/*      c 	un caractere à mettre en minuscule							*/
-/*                                                                                                      */
-/* En sortie:                                                 						*/
-/*	le caractere en minuscule                                                              		*/
-/*													*/
-/* Principe:                                                                                           	*/
-/*      Si le caractere est en majuscule                                                               	*/
-/*          Le mettre en majuscule et le retourner                                                    	*/
-/*      Sinon                                                                                           */
-/*          Retourner le caractere tel quel                     					*/
-/*	Fsi												*/
-/*                                                                                                      */
-/* Lexique:                                                                                            	*/
-/*      Aucune variable                                                     				*/
-/* ---------------------------------------------------------------------------------------------------- */
-char lower(char c)
-{
-	return is_uppercase(c) ? c + 32 : c;
-}
-
-int start_with(char * mot, char * motif)
-{
-	int i,
-	    taille_motif = strlen(motif),
-	    taille_mot = strlen(mot),
-	    code_retour = 0;
-
-	if ( taille_motif <= taille_mot )
-	{
-		for (i = 0; i < taille_motif && !code_retour; ++i )
-		{
-			if ( lower(mot[i]) != motif[i] )
-			{
-				code_retour = 1;
-			}
-		}
-	}
-	else
-	{
-		code_retour = 1;
-	}
-
-	return code_retour;
-}
 
 /* ---------------------------------------------------------------------------------------------------- */
 /* afficher_mot         			Affiche un mot           				*/
@@ -119,17 +43,11 @@ int start_with(char * mot, char * motif)
 void afficher_mot(char * mot)
 {
 	int i,
-	    taille = strlen(mot),
-	    inc = 0;
+	    taille = strlen(mot);
 
-	for (i = 0; i < taille; ++i, inc = 0)
+	for (i = 0; i < taille; ++i)
 	{
-		if ( is_uppercase(mot[i]) )
-		{
-			inc = 32;
-		}
-
-		printf("%c", mot[i] + inc);
+		printf("%c", tolower(mot[i]));
 	}
 
 	printf("\n");
@@ -178,13 +96,13 @@ noeud_t * init_arbre()
 /* ---------------------------------------------------------------------------------------------------- */
 noeud_t * creer_noeud(char c)
 {
-	noeud_t * nv = (noeud_t*) malloc(sizeof(noeud_t));
+	noeud_t * nv = (noeud_t *) malloc(sizeof(noeud_t));
 
 	if ( nv )
 	{
 		nv->val = c;
-		nv->lv = NULL;
-		nv->lh = NULL;
+		nv->lv  = NULL;
+		nv->lh  = NULL;
 	}
 	else
 	{
@@ -225,15 +143,15 @@ noeud_t * creer_noeud(char c)
 /* ---------------------------------------------------------------------------------------------------- */
 noeud_t ** recherche_prec_horizontal(noeud_t ** prec, char c, int * existe)
 {
-	noeud_t * fils = *prec;
+	noeud_t * cour = *prec;
 
-	while (fils && lower(fils->val) < c)
+	while (cour && tolower(cour->val) < c)
 	{
-		prec = &(fils->lh);
-		fils = fils->lh;
+		prec = &(cour->lh);
+		cour =   cour->lh;
 	}
 
-	*existe = (fils && lower(fils->val) == c) ? 1 : 0;
+	*existe = (cour && tolower(cour->val) == c);
 
 	return prec;
 }
@@ -246,6 +164,7 @@ noeud_t ** recherche_prec_horizontal(noeud_t ** prec, char c, int * existe)
 noeud_t ** recherche_prec(noeud_t ** cour, int *existe, int *i, char *mot, int taille)
 {
 	noeud_t ** prec = NULL;
+
 	while ( *existe && *i < taille )
 	{
 		prec = recherche_prec_horizontal(cour, mot[*i], existe);
@@ -256,34 +175,43 @@ noeud_t ** recherche_prec(noeud_t ** cour, int *existe, int *i, char *mot, int t
 			++(*i);
 		}
 	}
+
 	return prec;
 }
+
+/*************************************************************************************************************/
 
 
 void inserer_noeud(noeud_t ** arbre, char * mot)
 {
 	noeud_t ** prec,
-		*  nv;
+			*  nv;
 	int        existe = 1,
 		       i = 0,
 		       taille = strlen(mot);
 
 	prec = recherche_prec(arbre, &existe, &i, mot, taille);
 
-	while ( i < taille )
+	/* Si le mot existe déjà, alors on met la dernière (pointé par prec) en majuscule */
+	if ( i == taille )
 	{
-		if ( i == taille - 1 )
+		(*prec)->val = toupper((*prec)->val);
+	}
+	else
+	{
+		/* Le mot n'existe pas donc on met la dernière lettre en majuscule et on insère le reste du mot */
+		mot[taille-1] = toupper(mot[taille-1]);
+		while ( i < taille )
 		{
-			mot[i] -= 32;
+			nv = creer_noeud(mot[i]);
+
+			nv->lh = *prec;
+			*prec = nv;
+
+			prec = &(nv->lv);
+
+			++i;
 		}
-
-		nv = creer_noeud(mot[i]);
-
-		nv->lh = *prec;
-		*prec = nv;
-
-		prec = &(nv->lv);
-		++i;
 	}
 }
 
@@ -385,7 +313,7 @@ void afficher_prefixe(noeud_t * noeud, char * motif)
 		empiler(p, &ok, cour);
 		mot[strlen(mot)] = cour->val;
 
-		if ( is_uppercase(cour->val) )
+		if ( isupper(cour->val) )
 		{
 			printf("%s", motif);
 			afficher_mot(mot);
@@ -409,14 +337,14 @@ void afficher_motif(noeud_t ** arbre, char * motif)
 {
 	noeud_t ** prec;
 	int        existe = 1,
-			i = 0,
-			taille = strlen(motif);
+			   i = 0,
+			   taille = strlen(motif);
 
 	prec = recherche_prec(arbre, &existe, &i, motif, taille);
 
 	if ( existe )
 	{
-		if ( is_uppercase((*prec)->val) )
+		if ( isupper((*prec)->val) )
 		{
 			printf("%s\n", motif);
 		}

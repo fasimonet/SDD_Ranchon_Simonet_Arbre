@@ -238,25 +238,37 @@ noeud_t ** recherche_prec_horizontal(noeud_t ** prec, char c, int * existe)
 	return prec;
 }
 
+/* ---------------------------------------------------------------------------------------------------- */
+/* recherche_prec         	Recherche le precedent d'un noeud dans un arbre	 			*/
+/*						               						*/
+/*                                                                                                      */
+/* ---------------------------------------------------------------------------------------------------- */
+noeud_t ** recherche_prec(noeud_t ** cour, int *existe, int *i, char *mot, int taille)
+{
+	noeud_t ** prec = NULL;
+	while ( *existe && *i < taille )
+	{
+		prec = recherche_prec_horizontal(cour, mot[*i], existe);
+
+		if ( *existe )
+		{
+			cour = &((*prec)->lv);
+			++(*i);
+		}
+	}
+	return prec;
+}
+
+
 void inserer_noeud(noeud_t ** arbre, char * mot)
 {
-	noeud_t ** cour = arbre,
-			** prec,
-			*  nv;
+	noeud_t ** prec,
+		*  nv;
 	int        existe = 1,
 		       i = 0,
 		       taille = strlen(mot);
 
-	while ( existe )
-	{
-		prec = recherche_prec_horizontal(cour, mot[i], &existe);
-
-		if ( existe )
-		{
-			cour = &((*prec)->lv);
-			++i;
-		}
-	}
+	prec = recherche_prec(arbre, &existe, &i, mot, taille);
 
 	while ( i < taille )
 	{
@@ -395,22 +407,12 @@ void afficher_prefixe(noeud_t * noeud, char * motif)
 
 void afficher_motif(noeud_t ** arbre, char * motif)
 {
-	noeud_t ** cour = arbre,
-			** prec;
+	noeud_t ** prec;
 	int        existe = 1,
-		       i = 0,
-		       taille = strlen(motif);
+			i = 0,
+			taille = strlen(motif);
 
-	while ( existe && i < taille )
-	{
-		prec = recherche_prec_horizontal(cour, motif[i], &existe);
-
-		if ( existe )
-		{
-			cour = &((*prec)->lv);
-			++i;
-		}
-	}
+	prec = recherche_prec(arbre, &existe, &i, motif, taille);
 
 	if ( existe )
 	{

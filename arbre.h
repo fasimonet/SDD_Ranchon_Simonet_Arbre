@@ -33,6 +33,7 @@ noeud_t* init_arbre();
 noeud_t* creer_noeud(char val);
 
 noeud_t** recherche_prec_horizontal(noeud_t ** prec, char val, int * existe);
+noeud_t ** recherche_prec(noeud_t ** cour, int *existe, int *i, char *mot, int taille);
 
 void inserer_noeud(noeud_t ** arbre, char mot[5]);
 

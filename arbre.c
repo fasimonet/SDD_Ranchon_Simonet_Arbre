@@ -201,10 +201,42 @@ noeud_t ** recherche_prec(noeud_t ** cour, int *existe, int *i, char *mot, int t
 	return prec;
 }
 
-/*************************************************************************************************************/
-
-
-void inserer_noeud(noeud_t ** arbre, char * mot)
+/* ---------------------------------------------------------------------------------------------------- *
+ * inserer_mot         				Insere un nouveau mot dans l'arbre	 								*
+ *						               																	*
+ *                                                                                                      *
+ * En entree:                                                                                           *
+ *   ** arbre	un pointeur vers un pointeur de noeud													*
+ *    * mot 	mot a parcourir dans l'arbre															*
+ *                                                                                                      *
+ * En sortie:                                                 											*
+ *	Aucune sortie                                       												*
+ *																										*
+ * Principe:                                                                                           	*
+ *      Initialiser les variables                                                               		*
+ *		Retourner le precedent de la premiere lettre dans le mot a inserer qui n'est pas deja present 	*
+ *  	dans l'arbre 																					*
+ *		Si le compteur de lettres correspond a la derniere lettre du mot a ajouter						*
+ *			[alors le mot existe deja]																	*
+ *			Mettre la derniere lettre du mot (dans l'arbre) en majuscule								*
+ *		Sinon																							*
+ *			[alors le mot n'existe pas encore]															*
+ *			Mettre la derniere lettre du mot (dans le mot lui meme) en majuscule						*
+ *			Tant que le mot n'est pas entierement recopie dans l'arbre									*
+ *				Creer un nouveau noeud contenant la lettre du mot correspondant au compteur de mot		*
+ *				Ajouter le nouveau noeud dans l'arbre en refaisant les chainages						*
+ *				Faire avancer le precedent																*		
+ *		Fsi																								*
+ *	Fait																								*
+ *                                                                                                      *
+ * Lexique:                                                                                            	*
+ *   ** prec	un pointeur vers le pointeur precedent                                                 	*
+ *	  * nv		un pointeur vers un nouveau noeud a inserer												*
+ *		existe	un booleen qui indique si le noeud a ajouter existe deja dans l'arbre 					*
+ *		i		compteur 																				*
+ *		taille	taille du mot a inserer																	*
+ * ---------------------------------------------------------------------------------------------------- */
+void inserer_mot(noeud_t ** arbre, char * mot)
 {
 	noeud_t ** prec,
 			*  nv;
@@ -214,14 +246,12 @@ void inserer_noeud(noeud_t ** arbre, char * mot)
 
 	prec = recherche_prec(arbre, &existe, &i, mot, taille);
 
-	/* Si le mot existe déjà, alors on met la dernière (pointé par prec) en majuscule */
 	if ( i == taille )
 	{
 		(*prec)->val = toupper((*prec)->val);
 	}
 	else
 	{
-		/* Le mot n'existe pas donc on met la dernière lettre en majuscule et on insère le reste du mot */
 		mot[taille-1] = toupper(mot[taille-1]);
 		while ( i < taille )
 		{
@@ -323,6 +353,39 @@ void liberer_dico(char ** dico, int taille)
 	free(dico);
 }
 
+/* ---------------------------------------------------------------------------------------------------- *
+ * afficher_prefixe         				Realise un affichage prefixe	 							*
+ *						               																	*
+ *                                                                                                      *
+ * En entree:                                                                                           *
+ *    * noeud	un pointeur vers un noeud courant 														*
+ *    * motif 	mot a parcourir dans l'arbre															*
+ *                                                                                                      *
+ * En sortie:                                                 											*
+ *	Aucune sortie                                       												*
+ *																										*
+ * Principe:                                                                                           	*
+ *      Initialiser les variables                                                               		*
+ *		Tant que le parcours n'est pas terminé															*
+ *			Empiler le noeud courant																	*
+ *			Si le noeud courant est la derniere lettre d'un mot											*
+ *				Afficher le debut du mot																*
+ *				Afficher la fin du mot																	*
+ *			Fsi																							*
+ *			Avancer le courant sur le lien vertical														*
+ *			Tant que le noeud courant est nul et alors la pile n'est pas vide							*
+ *				Depiler	pour remonter dans l'arbre														*
+ *				Effacer la derniere lettre du mot														*
+ *				Avancer sur le lien horizontal															*
+ *			Fait																						*
+ *		Fait																							*	
+ *                                                                                                      *
+ * Lexique:                                                                                            	*
+ *    * cour	un pointeur vers le noeud courant                                                 		*
+ *	  * p		un pointeur vers la pile																*
+ *		ok		un booleen qui indique si un probleme a eu lieu avec la gestion de pile 				*
+ *		mot[]	le mot a afficher 																		*
+ * ---------------------------------------------------------------------------------------------------- */
 void afficher_prefixe(noeud_t * noeud, char * motif)
 {
 	noeud_t * cour = noeud;

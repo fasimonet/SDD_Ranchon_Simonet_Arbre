@@ -33,20 +33,15 @@
 /*	taille	nombre de mots dans le dictionnaire							*/
 /*	i	compteur pour l'incrementation de la boucle pour					*/
 /* ---------------------------------------------------------------------------------------------------- */
-int charger_fichier(char * name, char *** dico)
+noeud_t * construction_arbre(char * name)
 {
 	char chaine[TAILLE_MAX];
-	int taille = -1,
-	    i;
 	FILE * fe = fopen(name, "r");
+	noeud_t * arbre = init_arbre();
 
 	if ( fe )
 	{
-		fscanf(fe, "%d ", &taille);
-
-		*dico = (char **) malloc(sizeof(char *) * taille);
-
-		for (i = 0; i < taille; ++i)
+		while ( !feof(fe) )
 		{
 			fscanf(fe, "%s ", chaine);
 			
@@ -55,11 +50,14 @@ int charger_fichier(char * name, char *** dico)
 				chaine[strlen(chaine)-1] = 0;
 			}
 
-			(*dico)[i] = (char *) malloc(sizeof(char) * strlen(chaine));
-			strcpy((*dico)[i], chaine);
+			inserer_mot(&arbre, chaine);
 		}
 		fclose(fe);
 	}
+	else
+	{
+		fprintf(stderr, "Fichier '%s' inexistant\n", name);
+	}
 
-	return taille;
+	return arbre;
 }

@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "arbre.h"
 
 /* ------------------------------ */
 /*   Déclaration des constantes   */
@@ -23,6 +24,6 @@
 /* ------------------------------ */
 /*   Déclaration des prototypes   */
 /* ------------------------------ */
-int charger_fichier(char * name, char *** dico);
+noeud_t * construction_arbre(char * name);
 
 #endif

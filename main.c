@@ -4,28 +4,20 @@
 
 int main()
 {
-	noeud_t  * arbre = init_arbre();
-	char    ** dico;
-	int        taille,
-	           i;
+	noeud_t  * arbre = construction_arbre("fic.txt");
 
-	taille = charger_fichier("fic.txt", &dico);
-
-	for (i = 0; i < taille; ++i)
+	if ( arbre )
 	{
-		inserer_noeud(&arbre, dico[i]);
+		afficher_prefixe(arbre, "");
+
+		printf("-----------\n");
+
+		afficher_motif(&arbre, "ban");
+
+		liberer_arbre(arbre);
+
+		arbre = init_arbre();
 	}
-
-	afficher_prefixe(arbre, "");
-
-	printf("-----------\n");
-
-	afficher_motif(&arbre, "banni");
-
-	liberer_arbre(arbre);
-	liberer_dico(dico, taille);
-
-	arbre = init_arbre();
 
 	return 0;
 }

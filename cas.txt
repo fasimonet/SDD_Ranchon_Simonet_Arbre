@@ -1,0 +1,4 @@
+cas à tester:
+
+fichier :
+- vide ou absent

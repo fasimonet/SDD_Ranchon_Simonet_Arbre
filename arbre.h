@@ -33,15 +33,14 @@ noeud_t* init_arbre();
 
 noeud_t* creer_noeud(char val);
 
-noeud_t** recherche_prec_horizontal(noeud_t ** prec, char val, int * existe);
-noeud_t ** recherche_prec(noeud_t ** cour, int *existe, int *i, char *mot, int taille);
+noeud_t ** recherche_prec_horizontal(noeud_t ** prec, char val, int * existe);
+noeud_t ** recherche_prec(noeud_t ** cour, int * existe, int * i, char * mot, int taille);
 
-void inserer_noeud(noeud_t ** arbre, char mot[5]);
+void inserer_mot(noeud_t ** arbre, char * mot);
 
 void liberer_arbre(noeud_t * arbre);
-void liberer_dico(char ** dico, int taille);
 
 void afficher_prefixe(noeud_t * noeud, char * motif);
-void afficher_motif(noeud_t ** noeud, char motif[5]);
+void afficher_motif(noeud_t ** noeud, char * motif);
 
 #endif

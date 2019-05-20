@@ -1,8 +1,13 @@
+ac
+aa
+ab
+ad
+aa
 arbre
 feuille
 sport
 football
 fournir
-ban
 bannir
+ban
 manger

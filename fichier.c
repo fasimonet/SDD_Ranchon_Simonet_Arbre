@@ -40,16 +40,18 @@ noeud_t * construction_arbre(char * name)
 
 	if ( fe )
 	{
-		while ( !feof(fe) )
-		{
-			fscanf(fe, "%s ", chaine);
-			
+		fscanf(fe, "%s ", chaine);
+		while ( !feof(fe) || strlen(chaine) > 0 )
+		{			
 			if ( chaine[strlen(chaine)-1] == '\n' )
 			{
 				chaine[strlen(chaine)-1] = 0;
 			}
 
 			inserer_mot(&arbre, chaine);
+
+			strcpy(chaine, "");
+			fscanf(fe, "%s ", chaine);
 		}
 		fclose(fe);
 	}

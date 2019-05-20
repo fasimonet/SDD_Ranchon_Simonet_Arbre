@@ -80,7 +80,7 @@ noeud_t * init_arbre()
  *																										*
  * Principe:                                                                                           	*
  *      Allouer la memoire pour un element de type noeud_t et recuperer le pointeur vers cette memoire 	*
- *      Si le pointeur pointe sur une zone memoire existante                                      		*
+ *      Si le pointeur pointe sur une zone memoire existante                                      		*l
  *		Initialiser la lettre dans le nouveau noeud avec le caractere passe en parametre				*
  *		Initialiser le lien vertical a nul																*
  *		Initialiser le lien horizontal a nul					 										*
@@ -158,7 +158,7 @@ noeud_t ** recherche_prec_horizontal(noeud_t ** prec, char c, int * existe)
  *						               																	*
  *                                                                                                      *
  * En entree:                                                                                           *
- *   ** cour 	un pointeur vers un pointeur de noeud													*
+ *   ** prec 	un pointeur vers un pointeur de noeud													*
  *    * existe	booleen pour savoir si le noeud dont on cherche le precedent existe						*
  *    * i	compteur dans un mot																		*
  *    * mot 	mot a parcourir dans l'arbre															*
@@ -179,20 +179,21 @@ noeud_t ** recherche_prec_horizontal(noeud_t ** prec, char c, int * existe)
  *	Retourner le precedent																				*
  *                                                                                                      *
  * Lexique:                                                                                            	*
- *   ** prec	un pointeur vers le pointeur precedent                                                 	*
+ *   Aucune variable intermediaire                                             							*
  * ---------------------------------------------------------------------------------------------------- */
-noeud_t ** recherche_prec(noeud_t ** cour, int * existe, int * i, char * mot, int taille)
+noeud_t ** recherche_prec(noeud_t ** prec, int * existe, int * i, char * mot, int taille)
 {
-	noeud_t ** prec = NULL;
-
 	while ( *existe && *i < taille )
 	{
-		prec = recherche_prec_horizontal(cour, mot[*i], existe);
+		prec = recherche_prec_horizontal(prec, mot[*i], existe);
 
 		if ( *existe )
 		{
-			cour = &((*prec)->lv);
 			++(*i);
+			if ( *i < taille )
+			{
+				prec = &((*prec)->lv);
+			}
 		}
 	}
 
@@ -244,7 +245,7 @@ void inserer_mot(noeud_t ** arbre, char * mot)
 
 	prec = recherche_prec(arbre, &existe, &i, mot, taille);
 
-	if ( i == taille )
+	if ( existe )
 	{
 		(*prec)->val = toupper((*prec)->val);
 	}
@@ -384,7 +385,7 @@ void afficher_prefixe(noeud_t * noeud, char * motif)
  * afficher_motif         	Affiche tous les mots de l'arbre debutant par un motif           			*
  *                                                                                                      *
  * En entree:                                                                                           *
- *   ** arbre 	l'arbre dans lequel realiser la recherche												*
+ *    * arbre 	l'arbre dans lequel realiser la recherche												*
  *    * motif	le motif constituant le debut dans mots recherches										*
  *                                                                                                      *
  * En sortie:                                                 											*
@@ -405,14 +406,14 @@ void afficher_prefixe(noeud_t * noeud, char * motif)
  *	i	compteur pour incrementer les lettres du mot a afficher											*
  *   ** prec	pointeur de pointeur vers le precedent													*
  * ---------------------------------------------------------------------------------------------------- */
-void afficher_motif(noeud_t ** arbre, char * motif)
+void afficher_motif(noeud_t * arbre, char * motif)
 {
 	noeud_t ** prec;
 	int        existe = 1,
 			   i = 0,
 			   taille = strlen(motif);
 
-	prec = recherche_prec(arbre, &existe, &i, motif, taille);
+	prec = recherche_prec(&arbre, &existe, &i, motif, taille);
 
 	if ( existe )
 	{

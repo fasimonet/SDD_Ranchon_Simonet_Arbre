@@ -41,6 +41,6 @@ void inserer_mot(noeud_t ** arbre, char * mot);
 void liberer_arbre(noeud_t * arbre);
 
 void afficher_prefixe(noeud_t * noeud, char * motif);
-void afficher_motif(noeud_t ** noeud, char * motif);
+void afficher_motif(noeud_t * noeud, char * motif);
 
 #endif

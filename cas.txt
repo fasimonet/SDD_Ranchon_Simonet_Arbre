@@ -1,4 +1,43 @@
 cas à tester:
 
-fichier :
+fichier:
 - vide ou absent
+- non vide
+
+inserer_mot:
+- premier element
+- en tete
+- au milieu
+- en fin
+- deja existant
+- 1 caractère
+- plusieurs caractères
+
+rech_prec_horizontal :
+- le precedent est en tete
+- cas general
+
+recherche_prec:
+- le mot a rechercher existe deja 
+- le mot a rechercher n'existe pas
+
+afficher_motif:
+- si au moin 1 mot contiuent le afficher_motif
+- si 0 mot contient le motif
+- si le motif est un mot
+
+afficher_prefixe:
+- arbre vide
+- arbre non vide
+
+creer_noeud:
+- cas général
+
+liberer_arbre:
+- cas general (valgrind)
+
+afficher_mot:
+- cas general
+
+init_arbre:
+- verifier que cela renvoie bien NUL

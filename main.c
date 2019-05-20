@@ -12,7 +12,7 @@ int main()
 
 		printf("-----------\n");
 
-		afficher_motif(&arbre, "ban");
+		afficher_motif(arbre, "ban");
 
 		liberer_arbre(arbre);
 

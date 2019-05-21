@@ -10,12 +10,15 @@ inserer_mot:
 - au milieu
 - en fin
 - deja existant
+- mot ayant la même racine
 - 1 caractère
 - plusieurs caractères
-
+    
 rech_prec_horizontal :
+- l'arbre est vide ou un sous arbre est vide (ou les freres dans la branche ou l'on cherche)
 - le precedent est en tete
 - cas general
+- la lettre à rechercher n'existe pas
 
 recherche_prec:
 - le mot a rechercher existe deja 

@@ -21,6 +21,11 @@ typedef struct pile
     element_pile_t ** contenu;
 } pile_t;
 
+/* ------------------------------ *
+ *   Déclaration des constantes   *
+ * ------------------------------ */
+#define TAILLE_MAX 30
+
 void afficher_pile(pile_t p);
 int est_pile_vide(pile_t p);
 int est_pile_pleine(pile_t p);

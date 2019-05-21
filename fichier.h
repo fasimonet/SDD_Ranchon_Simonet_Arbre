@@ -17,11 +17,6 @@
 #include "arbre.h"
 
 /* ------------------------------ *
- *   Déclaration des constantes   *
- * ------------------------------ */
-#define TAILLE_MAX 100
-
-/* ------------------------------ *
  *   Déclaration des prototypes   *
  * ------------------------------ */
 noeud_t * construction_arbre(char * name);

@@ -138,7 +138,7 @@ noeud_t * creer_noeud(char c)
  * Lexique:                                                                                            	*
  *    * fils	pointeur vers le noeud courant                                                     		*
  * ---------------------------------------------------------------------------------------------------- */
-noeud_t ** recherche_prec_horizontal(noeud_t ** prec, char c, int * existe)
+/*noeud_t ** recherche_prec_horizontal(noeud_t ** prec, char c, int * existe)
 {
 	noeud_t * fils = *prec;
 
@@ -151,6 +151,20 @@ noeud_t ** recherche_prec_horizontal(noeud_t ** prec, char c, int * existe)
 	*existe = (fils && tolower(fils->val) == c);
 
 	return prec;
+}*/
+
+void recherche_prec_horizontal(noeud_t *** prec, char c, int * existe)
+{
+	noeud_t * fils = **prec;
+
+	while (fils && tolower(fils->val) < c)
+	{
+		*prec = &(fils->lh);
+		fils =   fils->lh;
+	}
+
+	*existe = (fils && tolower(fils->val) == c) ? 1 : 0;
+
 }
 
 /* ---------------------------------------------------------------------------------------------------- *
@@ -185,7 +199,7 @@ noeud_t ** recherche_prec(noeud_t ** prec, int * existe, int * i, char * mot, in
 {
 	while ( *existe && *i < taille )
 	{
-		prec = recherche_prec_horizontal(prec, mot[*i], existe);
+		recherche_prec_horizontal(&prec, mot[*i], existe);
 
 		if ( *existe )
 		{
@@ -297,7 +311,7 @@ void liberer_arbre(noeud_t * arbre)
 {
 	noeud_t * cour = arbre,
 	        * tmp;
-	pile_t  * p = initialiser_pile(10);
+	pile_t  * p = initialiser_pile(TAILLE_MAX);
 	int       ok;
 
 	while ( cour )
@@ -352,7 +366,7 @@ void liberer_arbre(noeud_t * arbre)
 void afficher_prefixe(noeud_t * noeud, char * motif)
 {
 	noeud_t * cour = noeud;
-	pile_t  * p = initialiser_pile(10);
+	pile_t  * p = initialiser_pile(TAILLE_MAX);
 	int       ok;
 	char      mot[30] = "";
 

@@ -49,7 +49,6 @@ noeud_t * construction_arbre(char * name)
 			}
 
 			inserer_mot(&arbre, chaine);
-
 			strcpy(chaine, "");
 			fscanf(fe, "%s ", chaine);
 		}

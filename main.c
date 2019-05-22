@@ -14,10 +14,8 @@ int main()
 			 * arbre_c,
 			 * arbre_a_c,
 			 * arbre_artiste_lit,
-			 * noeud3, 
-			 ** prec,
-			 ** prec1,
-			 ** prec2;
+			 * arbre_insertion,
+			 ** prec;
 
 	/* ---------------------------- */
 	/* INITIALISATION DES VARIABLES */
@@ -30,6 +28,8 @@ int main()
 
 	arbre_artiste_lit = construction_arbre("fic_artiste_lit.txt");
 
+	arbre_insertion = init_arbre();
+
 	i = 0;
 
 	/* -------------------------------- */
@@ -40,7 +40,7 @@ int main()
 	/* ------------------------- */
 	/* TEST : affichage d'un mot */
 	/* ------------------------- */
-	afficher_mot("bonjour");
+	afficher_mot("boNjouR");
 
 	/* -------------------------- */
 	/* TEST : creation d'un noeud */
@@ -91,7 +91,74 @@ int main()
 	/* La suite des tests */
 	/* -------------------------------------------------------------------------------------------------- */
 
-	/* A FINIR */
+	/* -------------------------------------------------------------------------------------------------- */
+	/* TEST : Insertion d'un nouveau mot */
+	/* -------------------------------------------------------------------------------------------------- */
+
+	/* Cas 1 : Insertion d'un premier element dans un arbre vide */
+	prec = &arbre_insertion;
+	strcpy(mot, "lit");
+	inserer_mot(prec, mot);
+
+	/* Cas 2 : Insertion d'un mot en tête d'un arbre non vide */
+	strcpy(mot, "artiste");
+	inserer_mot(prec, mot);
+
+	/* Cas 3 : Insertion d'un mot au milieu dans arbre non vide */
+	strcpy(mot, "bruit");
+	inserer_mot(prec, mot);
+
+	/* Cas 4 : Insertion d'un mot en fin dans arbre non vide */
+	strcpy(mot, "velo");
+	inserer_mot(prec, mot);
+
+	/* Cas 5 : Insertion d'un mot déjà existant dans arbre non vide */
+	strcpy(mot, "bruit");
+	inserer_mot(prec, mot);
+
+	/* Cas 6 : Insertion d'un mot ayant une racine déjà existante dans l'arbre */
+	strcpy(mot, "lire");
+	inserer_mot(prec, mot);
+
+	/* Cas 7 : Insertion d'un mot d'un caractère */
+	strcpy(mot, "y");
+	inserer_mot(prec, mot);
+
+
+	/* ------------------------ */
+	/* TEST : Affichage prefixe */
+	/* ------------------------ */
+
+	/* Cas 1 : Arbre vide */
+	printf("Debut affichage arbre vide\n");
+	afficher_prefixe(arbre_vide, "");
+	printf("Fin affichage arbre vide\n");
+
+	/* Cas 2 : Arbre non vide */
+	printf("Debut affichage arbre non vide\n");
+	afficher_prefixe(arbre_artiste_lit, "");
+	printf("Fin affichage arbre non vide\n");
+
+
+	/* ------------------------ */
+	/* TEST : Affichage motif   */
+	/* ------------------------ */
+
+	/* Cas 1 : Aucun mot ne contient le motif */
+	printf("Recherche du motif 'football' :\n");
+	afficher_motif(arbre_insertion, "football");
+	printf("Fin de la recherche du motif 'football'\n");
+
+	/* Cas 2 : Au moins 1 mot contient le motif */
+	printf("Recherche du motif 'li' :\n");
+	afficher_motif(arbre_insertion, "li");
+	printf("Fin de la recherche du motif 'li'\n");
+	
+	/* Cas 3 : Le motif est un mot */
+	printf("Recherche du motif 'lire' :\n");
+	afficher_motif(arbre_insertion, "lire");
+	printf("Fin de la recherche du motif 'lire'\n");
+
 
 	arbre = construction_arbre("fic.txt");
 	if ( arbre )

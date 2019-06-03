@@ -71,6 +71,10 @@ int main()
 	prec = &arbre_a_c;
 	recherche_prec_horizontal(&prec, 'c', &existe);
 
+	liberer_arbre(arbre_a);
+	liberer_arbre(arbre_c);
+	liberer_arbre(arbre_a_c);
+
 	/* -------------------------------------------------------------------------------------------------- */
 	/* TEST : recherche du precedent dans un arbre pour se positionner avant l'insertion d'un nouveau mot */
 	/* -------------------------------------------------------------------------------------------------- */
@@ -139,6 +143,7 @@ int main()
 	afficher_prefixe(arbre_artiste_lit, "");
 	printf("Fin affichage arbre non vide\n");
 
+	liberer_arbre(arbre_artiste_lit);
 
 	/* ------------------------ */
 	/* TEST : Affichage motif   */
@@ -159,6 +164,7 @@ int main()
 	afficher_motif(arbre_insertion, "lire");
 	printf("Fin de la recherche du motif 'lire'\n");
 
+	liberer_arbre(arbre_insertion);
 
 	arbre = construction_arbre("fic.txt");
 	if ( arbre )

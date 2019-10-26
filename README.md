@@ -1,9 +1,36 @@
-# SDD_Ranchon_Simonet_Arbre
+# Tree librairies
 
-# Description
-School work during first year of engineering school.
-Creation of a C library implementing tree structure of algorithmic. 
+Result of a practical work during our first study year in our engineering school ISIMA (Institut Supérieur d'Informatique et Modélisation de ses Applications). Realised during March 2018. Consists in C libraries implementing tree functions. 
 
-# Collaborators
-Flavio RANCHON 
-Fabien SIMONET
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+You need a linux shell for the compilation and the launch of the executable program (ex: bash).
+
+### Compilation
+
+Use the Makefile to compile the executable program with the following command :
+
+```
+make
+```
+
+### Program execution
+
+Once the executable program compiled, you will be able to launch him with the following command :
+
+```
+./prog
+```
+
+## Built With
+
+* [C](https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html) - The language used
+
+## Authors
+
+* **Fabien Simonet** - *IT student at ISIMA school* - [fasimonet](https://github.com/fasimonet)
+* **Flavio Ranchon** - *IT student at ISIMA school* - [flavio63730](https://github.com/flavio63730)
